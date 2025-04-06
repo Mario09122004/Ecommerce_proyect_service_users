@@ -152,11 +152,12 @@ export const login = async (req, res) => {
     
         const existingUser = await User.findOne({ where: { username, password} });
         
-        if(existingUser.status == false){
-            return res.status(200).json({message:"Acount ban"});
-        }
-
         if (existingUser) {
+
+            if(existingUser.status == false){
+                return res.status(200).json({message:"Acount ban"});
+            }
+
             const SECRET_KEY = 'aJksd9QzPl+sVdK7vYc/L4dK8HgQmPpQ5K9yApUsj3w';
     
             const token = jwt.sign({id:existingUser.id, username:existingUser.username, rol:existingUser.rol}, SECRET_KEY, {expiresIn: "1h"});
